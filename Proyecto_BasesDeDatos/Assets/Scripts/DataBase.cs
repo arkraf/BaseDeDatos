@@ -7,17 +7,18 @@ using UnityEngine.UI;
 
 public class DataBase : MonoBehaviour
 {
-
+    //Declaramos las variables necesarias
     public Text inventory;
 
     private string dbName = "URI=file:Inventory.db";
     // Start is called before the first frame update
     void Start()
     {
+        //Creamos la base de datos
         CreateDatabase();
-
     }
 
+    // En el update actualizaremos constantemente la base de datos para poder ver la inforción actual en cualquier momento
     void Update()
     {
         DisplayTools();
@@ -43,6 +44,7 @@ public class DataBase : MonoBehaviour
         }
     }
 
+    //En esta función añadiremos los datos a la base de datos
     public void AddTool(string toolName, int weaponDamage, int toolPrice)
     {
         using(var connection = new SqliteConnection(dbName))
@@ -51,7 +53,7 @@ public class DataBase : MonoBehaviour
 
             using(var command = connection.CreateCommand())
             {
-                //creamos una tabla sino existe una con el mismo nombre
+                //añadimos a la tabla los datos proporcionados
                 command.CommandText = "INSERT INTO tools (name,damage,price) VALUES ('" + toolName + "', '"+ weaponDamage +"', '" + toolPrice + "');";
                 command.ExecuteNonQuery();
             }
@@ -60,6 +62,7 @@ public class DataBase : MonoBehaviour
 
     }
 
+    //Esta función se encarga de mostrar los datos almacenados en la base de datos
     public void DisplayTools()
     {
 
@@ -71,13 +74,14 @@ public class DataBase : MonoBehaviour
 
             using(var command = connection.CreateCommand())
             {
-                //creamos una tabla sino existe una con el mismo nombre
+                //Seleccionamos la información que queremos mostrar
                 command.CommandText = "SELECT * FROM tools;";
 
                 using (IDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
-                
+
+                    //Mostramos por pantalla la información
                     inventory.text +=reader["name"] + "\tDmg: " + reader["damage"] + "\tPrice:" + reader["price"] + "\n";
                 
                     reader.Close();    

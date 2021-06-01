@@ -5,7 +5,7 @@ using Newtonsoft.Json.Linq;
 
 public class Personaje : MonoBehaviour
 {
-    
+    //Declaramos las variables necesarias para la información del personaje
     public string _name = "";
     public int _level = 7;
     public int _hp = 53;
